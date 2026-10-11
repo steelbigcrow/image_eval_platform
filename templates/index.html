@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片比对平台</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark">IB</span>
+      <div>
+        <h1>图片比对平台</h1>
+        <p>上传原图与目标图，获取相似度评估结果</p>
+      </div>
+    </div>
+    <span class="badge-stage">框架版本 · 算法待优化</span>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>1. 上传图片</h2>
+        <p class="hint">支持 PNG / JPG / BMP / GIF / WEBP / TIFF，单次请求不超过 {{ max_upload_mb }} MB</p>
+      </div>
+
+      <div class="upload-grid">
+        <div class="dropzone" id="dropzone-source" data-role="source" tabindex="0">
+          <input type="file" id="file-source" class="file-input" accept="image/*" aria-label="选择原图片">
+          <div class="dz-empty">
+            <span class="dz-icon">🖼</span>
+            <strong>原图片</strong>
+            <span>点击或拖拽文件到此处</span>
+          </div>
+          <div class="dz-preview" hidden>
+            <img alt="原图片预览">
+            <div class="dz-meta">
+              <strong class="dz-name"></strong>
+              <span class="dz-size"></span>
+            </div>
+            <button type="button" class="btn-clear" aria-label="移除原图片">移除</button>
+          </div>
+        </div>
+
+        <div class="dropzone" id="dropzone-target" data-role="target" tabindex="0">
+          <input type="file" id="file-target" class="file-input" accept="image/*" aria-label="选择目标图片">
+          <div class="dz-empty">
+            <span class="dz-icon">🎯</span>
+            <strong>目标图片</strong>
+            <span>点击或拖拽文件到此处</span>
+          </div>
+          <div class="dz-preview" hidden>
+            <img alt="目标图片预览">
+            <div class="dz-meta">
+              <strong class="dz-name"></strong>
+              <span class="dz-size"></span>
+            </div>
+            <button type="button" class="btn-clear" aria-label="移除目标图片">移除</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>2. 选择算法并比对</h2>
+        <p class="hint">当前算法均为占位实现，后续可按同一接口替换</p>
+      </div>
+
+      <div class="controls">
+        <label class="field">
+          <span>比对算法</span>
+          <select id="algorithm">
+            {% for item in algorithms %}
+            <option value="{{ item.key }}" {% if item.key == default_algorithm %}selected{% endif %}>{{ item.label }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <p class="algo-desc" id="algo-desc"></p>
+        <button type="button" id="btn-compare" class="btn-primary">开始比对</button>
+      </div>
+
+      <div class="alert" id="alert" hidden></div>
+    </section>
+
+    <section class="panel" id="result-panel" hidden>
+      <div class="panel-head">
+        <h2>3. 比对结果</h2>
+      </div>
+
+      <div class="result-top">
+        <div class="score-ring">
+          <svg viewBox="0 0 120 120" width="140" height="140" role="img" aria-label="相似度分数">
+            <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-value" id="ring-value" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="score-text">
+            <strong id="score-value">--</strong>
+            <span>相似度</span>
+          </div>
+        </div>
+
+        <div class="result-info">
+          <span class="level-tag" id="level-tag">--</span>
+          <h3 id="algo-used">--</h3>
+          <p id="result-message"></p>
+          <div class="meta-grid">
+            <div><span>原图尺寸</span><strong id="source-size">--</strong></div>
+            <div><span>目标图尺寸</span><strong id="target-size">--</strong></div>
+            <div><span>算法标识</span><strong id="algo-key">--</strong></div>
+            <div><span>生成时间</span><strong id="created-at">--</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-title">指标明细</h3>
+      <table class="metrics-table">
+        <thead><tr><th>指标</th><th>数值</th></tr></thead>
+        <tbody id="metrics-body"></tbody>
+      </table>
+
+      <h3 class="section-title">图片对照</h3>
+      <div class="compare-grid">
+        <figure><figcaption id="caption-source">原图片</figcaption><div class="frame"><img id="preview-source" alt="原图片结果预览"></div></figure>
+        <figure><figcaption id="caption-target">目标图片</figcaption><div class="frame"><img id="preview-target" alt="目标图片结果预览"></div></figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span>Python + Flask 后端 · 原生 HTML/CSS/JS 前端</span>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

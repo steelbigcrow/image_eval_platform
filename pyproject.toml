@@ -1,0 +1,19 @@
+[tool.ruff]
+target-version = "py313"
+extend-exclude = [".git", "__pycache__", ".venv", "venv"]
+
+[tool.ruff.lint]
+# E/W: pycodestyle 空白与命名规范
+# F:   pyflakes 未使用导入、未定义名称
+# I:   import 排序
+# UP:  pyupgrade 现代化语法
+# B:   flake8-bugbear 易错写法
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+# 保持与 ruff format 默认一致，显式写出便于后续调整
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

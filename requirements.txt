@@ -1,0 +1,6 @@
+Flask>=3.0
+Pillow>=10.0
+numpy>=1.24
+
+# 开发/测试依赖
+pytest>=7.4

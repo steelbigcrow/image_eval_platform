@@ -1,0 +1,369 @@
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --border: #e3e8f0;
+  --text: #1c2434;
+  --text-soft: #6b7688;
+  --primary: #3d6dff;
+  --primary-dark: #2c55d8;
+  --success: #12a971;
+  --warn: #e8a317;
+  --danger: #e04f5f;
+  --radius: 14px;
+  --shadow: 0 6px 24px rgba(28, 36, 52, 0.07);
+}
+
+* { box-sizing: border-box; }
+
+/* hidden 属性必须优先于组件自身的 display 规则，
+   否则 .dz-empty / .dz-preview 这类显式 display 的元素会同时显示。 */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ---------- 头部 ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), #7b5cff);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.app-header h1 { margin: 0; font-size: 20px; }
+.app-header p { margin: 2px 0 0; font-size: 13px; color: var(--text-soft); }
+
+.badge-stage {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fff5e0;
+  color: #a76a05;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---------- 布局 ---------- */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px 24px 26px;
+}
+
+.panel-head h2 { margin: 0; font-size: 16px; }
+.panel-head .hint { margin: 4px 0 18px; font-size: 13px; color: var(--text-soft); }
+
+.section-title {
+  margin: 26px 0 12px;
+  font-size: 14px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+/* ---------- 上传区 ---------- */
+.upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.dropzone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: #fbfcfe;
+  min-height: 210px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color .18s, background .18s, transform .18s;
+  padding: 16px;
+  outline: none;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible,
+.dropzone.is-dragover {
+  border-color: var(--primary);
+  background: #f2f6ff;
+}
+
+.dropzone.is-dragover { transform: scale(1.01); }
+
+.dz-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+/* 文件输入对用户不可见，但保留在无障碍树中（不能直接用 hidden 属性，
+   否则读屏软件与自动化都定位不到该控件）。 */
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dz-icon { font-size: 30px; }
+.dz-empty strong { color: var(--text); font-size: 15px; }
+
+.dz-preview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.dz-preview img {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  object-fit: contain;
+}
+
+.dz-meta { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: var(--text-soft); }
+.dz-meta strong { color: var(--text); font-size: 13px; word-break: break-all; }
+
+.btn-clear {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-soft);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-clear:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ---------- 控制区 ---------- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > span { font-size: 13px; color: var(--text-soft); }
+
+select {
+  min-width: 240px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+select:focus { outline: 2px solid rgba(61, 109, 255, .35); border-color: var(--primary); }
+
+.algo-desc {
+  margin: 0;
+  flex: 1;
+  min-width: 220px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.btn-primary {
+  padding: 10px 26px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .18s, transform .12s;
+}
+
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-primary:active:not(:disabled) { transform: translateY(1px); }
+
+.btn-primary:disabled { background: #b9c4dd; cursor: not-allowed; }
+
+.alert {
+  margin-top: 16px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: #fdecec;
+  color: #b4273a;
+  border: 1px solid #f6c9ce;
+  font-size: 14px;
+}
+
+.alert.is-info { background: #eef3ff; color: #2b4bbf; border-color: #cddaf9; }
+
+/* ---------- 结果区 ---------- */
+.result-top {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.score-ring { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+
+.ring-track, .ring-value {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.ring-track { stroke: #eef1f7; }
+
+.ring-value {
+  stroke: var(--primary);
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset .8s ease, stroke .4s ease;
+}
+
+.score-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.score-text strong { font-size: 30px; line-height: 1.1; }
+.score-text span { font-size: 12px; color: var(--text-soft); }
+
+.result-info { flex: 1; min-width: 260px; }
+.result-info h3 { margin: 8px 0 6px; font-size: 16px; }
+.result-info > p { margin: 0 0 14px; font-size: 13px; color: var(--text-soft); }
+
+.level-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eef1f7;
+  color: var(--text-soft);
+}
+
+.level-tag.level-high { background: #e6f7f0; color: var(--success); }
+.level-tag.level-mid { background: #eef3ff; color: var(--primary); }
+.level-tag.level-low { background: #fff5e0; color: var(--warn); }
+.level-tag.level-bad { background: #fdecec; color: var(--danger); }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.meta-grid div {
+  background: #f8fafd;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-grid span { font-size: 12px; color: var(--text-soft); }
+.meta-grid strong { font-size: 13px; word-break: break-all; }
+
+.metrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.metrics-table th, .metrics-table td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.metrics-table th { color: var(--text-soft); font-weight: 600; background: #f8fafd; }
+.metrics-table td:last-child { font-family: "Cascadia Mono", Consolas, monospace; }
+.metrics-table tr:last-child td { border-bottom: none; }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.compare-grid figure { margin: 0; }
+.compare-grid figcaption { font-size: 13px; color: var(--text-soft); margin-bottom: 8px; }
+
+.frame {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f8fafd;
+  padding: 8px;
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+}
+
+.frame img { max-width: 100%; max-height: 340px; object-fit: contain; }
+
+/* ---------- 底部 ---------- */
+.app-footer {
+  text-align: center;
+  padding: 18px;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+@media (max-width: 640px) {
+  .app-header { padding: 16px 18px; }
+  .panel { padding: 18px 16px 20px; }
+  .result-top { justify-content: center; }
+}
